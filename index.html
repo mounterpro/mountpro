@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MountPro - Professional mounting of wooden furniture, kitchen doors, wardrobes, and wooden & plastic floor installation.">
+    <title>MountPro | Professional Furniture Mounting & Flooring</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- EmailJS SDK for sending emails from frontend -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #2c2418;
+            background: linear-gradient(135deg, #faf6f0 0%, #f0ebe3 100%);
+        }
+
+        /* Navigation - Wood inspired */
+        .navbar {
+            background: linear-gradient(135deg, #3e2a1f 0%, #2c1e12 100%);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-bottom: 2px solid #c8a45d;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: #e8c27a;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .logo span {
+            color: #f5e6c4;
+            font-weight: 400;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #f5e6c4;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #e8c27a;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #e8c27a;
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section - Wood gradient */
+        .hero {
+            background: linear-gradient(135deg, #5c3d2e 0%, #3e2a1f 50%, #2c1e12 100%);
+            color: #f5e6c4;
+            text-align: center;
+            border-radius: 0 0 50px 50px;
+            margin-top: 70px;
+            padding: 100px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path fill="none" d="M20,20 L80,20 M20,40 L80,40 M20,60 L80,60 M20,80 L80,80" stroke="%23ffffff" stroke-width="2"/><circle cx="50" cy="50" r="5" fill="%23ffffff"/></svg>');
+            background-repeat: repeat;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 36px;
+            background: linear-gradient(135deg, #d4a853, #c49a3f);
+            color: #2c1e12;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+            background: linear-gradient(135deg, #e0b86e, #d4a853);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #e8c27a;
+            color: #e8c27a;
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(232, 194, 122, 0.1);
+            transform: translateY(-3px);
+            border-color: #f0d48a;
+            color: #f0d48a;
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #3e2a1f;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #d4a853, #8b6914);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Services Grid - Wood card theme */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, #ffffff 0%, #faf7f2 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            border: 1px solid #e8dcc8;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #d4a853, #8b6914);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #d4a853;
+        }
+
+        .service-card i {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #d4a853, #8b6914);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #3e2a1f;
+        }
+
+        .service-card p {
+            color: #5a4a3a;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            background: linear-gradient(135deg, #ffffff 0%, #fefcf8 100%);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border: 1px solid #e8dcc8;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #5c3d2e, #3e2a1f);
+            padding: 2rem;
+            border-radius: 20px;
+            color: #f5e6c4;
+        }
+
+        .contact-info i {
+            margin-right: 12px;
+            color: #e8c27a;
+        }
+
+        .contact-info p {
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0d6c8;
+            border-radius: 12px;
+            font-family: inherit;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #d4a853;
+            box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.1);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #d4a853, #b8860b);
+            color: white;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+
+        .alert-error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        /* Quotes Section */
+        .quotes-list {
+            background: linear-gradient(135deg, #ffffff, #fefcf8);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid #e8dcc8;
+        }
+
+        .quote-item {
+            border-bottom: 1px solid #e8dcc8;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .quote-item:hover {
+            background: #faf7f0;
+            transform: translateX(5px);
+        }
+
+        .quote-item:last-child {
+            border-bottom: none;
+        }
+
+        .quote-item strong {
+            color: #3e2a1f;
+            font-size: 1.1rem;
+        }
+
+        .quote-item small {
+            color: #b8860b;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2c1e12, #1a1208);
+            color: #d4c4b0;
+            text-align: center;
+            padding: 3rem;
+            margin-top: 3rem;
+            border-top: 2px solid #d4a853;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .contact-container {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Wood grain texture for some elements */
+        .wood-grain {
+            background-image: repeating-linear-gradient(45deg, rgba(212,168,83,0.05) 0px, rgba(212,168,83,0.05) 2px, transparent 2px, transparent 8px);
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">MOUNT<span>PRO</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#quotes">Quotes</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section id="home" class="hero">
+    <h1>Professional Furniture Mounting & Flooring</h1>
+    <p>Kitchen Doors • Wardrobes • Wooden Furniture • Wooden & Plastic Floors</p>
+    <a href="#contact" class="btn">Get a Free Quote</a>
+    <a href="#services" class="btn btn-secondary" style="margin-left: 1rem;">Our Services</a>
+</section>
+
+<section id="services">
+    <h2 class="section-title">Our Premium Wood Services</h2>
+    <div class="services-grid">
+        <div class="service-card">
+            <i class="fas fa-door-open"></i>
+            <h3>Kitchen Doors</h3>
+            <p>Professional mounting of all types of kitchen cabinet doors with precision alignment and soft-close mechanisms.</p>
+        </div>
+        <div class="service-card">
+            <i class="fas fa-wardrobe"></i>
+            <h3>Wardrobes</h3>
+            <p>Expert installation of built-in and freestanding wardrobes with custom shelving solutions.</p>
+        </div>
+        <div class="service-card">
+            <i class="fas fa-couch"></i>
+            <h3>Wooden Furniture</h3>
+            <p>Complete mounting for tables, chairs, beds, shelves, and custom wooden pieces.</p>
+        </div>
+        <div class="service-card">
+            <i class="fas fa-wood"></i>
+            <h3>Wooden Flooring</h3>
+            <p>Precision installation of hardwood, laminate, parquet, and engineered wood floors.</p>
+        </div>
+        <div class="service-card">
+            <i class="fas fa-border-all"></i>
+            <h3>Plastic Flooring</h3>
+            <p>Durable and stylish PVC, vinyl, and luxury vinyl plank (LVP) floor mounting.</p>
+        </div>
+        <div class="service-card">
+            <i class="fas fa-tools"></i>
+            <h3>Custom Assembly</h3>
+            <p>Any other wooden furniture assembly with professional tools and 1-year guarantee.</p>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
+    <h2 class="section-title">Request a Free Quote</h2>
+    <div class="contact-container">
+        <div class="contact-info">
+            <h3 style="color: #e8c27a; margin-bottom: 1.5rem;">Contact Information</h3>
+            <p><i class="fas fa-envelope"></i> <strong>teamount@gmail.com</strong></p>
+            <p><i class="fas fa-phone"></i> <strong>+30 6945 719657</strong></p>
+            <p><i class="fas fa-clock"></i> Mon-Fri: 8:00 - 20:00<br>Sat: 9:00 - 15:00</p>
+            <p><i class="fas fa-map-marker-alt"></i> Serving all Greece</p>
+            <hr style="margin: 2rem 0; border-color: rgba(232,194,122,0.3);">
+            <h4 style="color: #e8c27a; margin-bottom: 1rem;">Why choose MountPro?</h4>
+            <p>✓ 10+ years of experience<br>✓ Fully insured & certified craftsmen<br>✓ Free on-site estimates<br>✓ 1-year warranty on all work<br>✓ Eco-friendly materials & methods</p>
+        </div>
+        <div>
+            <div id="formAlert" class="alert"></div>
+            <form id="quoteForm">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <select id="serviceType" required>
+                        <option value="">Select a Service</option>
+                        <option>Kitchen Doors Mounting</option>
+                        <option>Wardrobe Installation</option>
+                        <option>Wooden Furniture Assembly</option>
+                        <option>Wooden Flooring</option>
+                        <option>Plastic Flooring</option>
+                        <option>Multiple Services</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" rows="4" placeholder="Project details, dimensions, or special requests..." required></textarea>
+                </div>
+                <button type="submit" class="btn submit-btn">Send Quote Request →</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section id="quotes">
+    <h2 class="section-title">Recent Quote Requests</h2>
+    <div class="quotes-list" id="quotesList">
+        <p style="text-align: center; color: #8b7355;">No quote requests yet. Submit one above!</p>
+    </div>
+</section>
+
+<footer>
+    <p><strong>MountPro</strong> - Professional Furniture Mounting & Flooring</p>
+    <p style="margin: 1rem 0;">📞 +30 6945 719657 | ✉️ teamount@gmail.com</p>
+    <p style="font-size: 0.9rem;">© 2024 MountPro. All rights reserved. Crafted with care for wooden excellence.</p>
+</footer>
+
+<script>
+    // Initialize EmailJS (optional - for real email sending)
+    // Sign up at emailjs.com to enable automatic emails
+    // (function() {
+    //     emailjs.init("YOUR_PUBLIC_KEY");
+    // })();
+
+    // Store quotes in localStorage (acts as database)
+    let quotes = JSON.parse(localStorage.getItem('mountpro_quotes')) || [];
+
+    function displayQuotes() {
+        const quotesList = document.getElementById('quotesList');
+        if (quotes.length === 0) {
+            quotesList.innerHTML = '<p style="text-align: center; color: #8b7355;">No quote requests yet. Submit one above!</p>';
+            return;
+        }
+        
+        quotesList.innerHTML = quotes.slice(0, 10).map((quote, index) => `
+            <div class="quote-item">
+                <strong><i class="fas fa-user" style="color: #d4a853;"></i> ${quote.name}</strong> - ${quote.service}<br>
+                <small><i class="fas fa-envelope" style="color: #d4a853;"></i> ${quote.email} | <i class="fas fa-phone" style="color: #d4a853;"></i> ${quote.phone}</small>
+                <p style="margin-top: 0.75rem; color: #5a4a3a;">${quote.message.substring(0, 120)}${quote.message.length > 120 ? '...' : ''}</p>
+                <small style="color: #b8860b;"><i class="far fa-clock"></i> ${new Date(quote.date).toLocaleString()}</small>
+            </div>
+        `).join('');
+    }
+
+    // Send email notification via mailto (fallback)
+    function sendEmailNotification(quoteData) {
+        const subject = `New Quote Request from ${quoteData.name} - MountPro`;
+        const body = `Name: ${quoteData.name}\nEmail: ${quoteData.email}\nPhone: ${quoteData.phone}\nService: ${quoteData.service}\n\nMessage:\n${quoteData.message}\n\n---\nThis quote request was submitted from the MountPro website.`;
+        window.location.href = `mailto:teamount@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        return true;
+    }
+
+    // Handle form submission
+    document.getElementById('quoteForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const service = document.getElementById('serviceType').value;
+        const message = document.getElementById('message').value;
+        
+        if (!name || !email || !phone || !service || !message) {
+            showAlert('Please fill in all fields', 'error');
+            return;
+        }
+        
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showAlert('Please enter a valid email address', 'error');
+            return;
+        }
+        
+        const quoteData = {
+            id: Date.now(),
+            name,
+            email,
+            phone,
+            service,
+            message,
+            date: new Date().toISOString()
+        };
+        
+        // Save to localStorage
+        quotes.unshift(quoteData);
+        localStorage.setItem('mountpro_quotes', JSON.stringify(quotes));
+        
+        // Send email notification
+        sendEmailNotification(quoteData);
+        
+        // Clear form
+        document.getElementById('quoteForm').reset();
+        
+        // Show success message
+        showAlert('✓ Quote request sent successfully! We will contact you within 24 hours.', 'success');
+        
+        // Refresh quotes display
+        displayQuotes();
+        
+        // Log for business tracking
+        console.log('New quote request from:', name, '- Service:', service);
+        console.log('Contact:', email, phone);
+    });
+    
+    function showAlert(message, type) {
+        const alertDiv = document.getElementById('formAlert');
+        alertDiv.textContent = message;
+        alertDiv.className = `alert alert-${type}`;
+        alertDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            alertDiv.style.display = 'none';
+        }, 5000);
+    }
+    
+    // Smooth scrolling for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+    
+    // Load quotes on page load
+    displayQuotes();
+    
+    // Business console log
+    console.log('🌳 MountPro Website Loaded - Professional wooden furniture mounting services');
+    console.log('📧 Contact: teamount@gmail.com | 📞 +30 6945 719657');
+    
+    // Add wood-inspired animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.service-card, .contact-container, .quotes-list').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+</script>
+
+</body>
+</html>
